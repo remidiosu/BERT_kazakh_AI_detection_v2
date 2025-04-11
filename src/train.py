@@ -1,5 +1,3 @@
-import torch
-from torch.utils.data import DataLoader
 from transformers import TrainingArguments, Trainer
 
 from src.data_preprocessing import prep_dataset
@@ -7,7 +5,8 @@ from src.dataset import DocumentDataset, doc_collate_fn
 from src.model import DocumentBertClassifier
 
 def train_model(
-    excel_path="data/data.xlsx",
+    human_dir="human_texts",
+    gpt_dir="gpt_texts",
     text_col="Text",
     label_col="Category",
     output_dir="doc_bert_output",
@@ -16,7 +15,7 @@ def train_model(
     lr=2e-5
 ):
     # 1) Load data
-    (train_texts, train_labels), (val_texts, val_labels), _ = prep_dataset(excel_path, text_col, label_col)
+    (train_texts, train_labels), (val_texts, val_labels), _ = prep_dataset(human_dir, gpt_dir, text_col, label_col)
 
     # 2) Create dataset objects
     train_dataset = DocumentDataset(train_texts, train_labels)
